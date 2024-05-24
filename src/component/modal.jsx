@@ -12,7 +12,7 @@ const Modal = ({ isOpen, onClose, win }) => {
                 left: 0,
                 width: "100%",
                 height: "100%",
-                background: "rgba(0, 0, 0, 0.5)",
+                background: "rgba(204, 255, 229, 0.5)",
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
@@ -30,7 +30,9 @@ const Modal = ({ isOpen, onClose, win }) => {
                     boxShadow: "2px solid black",
                 }}
             >
+                <h1>
                 Winner is {win}
+                </h1>
             </div>
         </div>
     );

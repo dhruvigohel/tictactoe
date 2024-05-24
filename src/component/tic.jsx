@@ -14,7 +14,7 @@ function winner(value) {
         [3, 4, 5],
         [6, 7, 8],
         [0, 3, 6],
-        [1, 4, 8],
+        [1, 4, 7],
         [2, 5, 8],
         [0, 4, 8],
         [2, 4, 6]
@@ -90,7 +90,7 @@ function Tictactoe({ isX, value, onPlay }) {
                 <Button value={value[7]} onButtonClick = {() => handleClick(7)}/>
                 <Button value={value[8]} onButtonClick = {() => handleClick(8)}/>
             </div>
-            {modal &&  <Modal win={win} isOpen={modal} onClose={()=>handleClose}/>}
+            {modal &&  <Modal win={winner(value)} isOpen={modal} onClose={()=>handleClose}/>}
         </div>
     )
 }
