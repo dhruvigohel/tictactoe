@@ -29,15 +29,25 @@ function winner(value) {
     return null;
 }
 
-function Tictactoe({ isX, value, onPlay }) {
+function isDraw(value) {
+    let flag=0;
+    for(let i=0; i<9; i++)
+    {
+        if(value[i]==0) return 0;
+    }
+    return 1;
+}
+
+function Tictactoe({ isX, value, onPlay, setCurrentMove }) {
     // const [value, setValue] = useState(Array(9).fill(null));
     // const [isX, setisX] = useState(true);
     const [modal, setModal] = useState(false);
-
+    const [modalDraw, setModalDraw] = useState(false);
     const [open, setOpen] = useState(false);
  
     const handleClose = () => {
         setModal(false);
+        setCurrentMove(0);
     };
  
     function handleClick(i) {
@@ -58,10 +68,16 @@ function Tictactoe({ isX, value, onPlay }) {
 
     }
     let win;
+    let draw;
     useEffect(() => {
+        draw = isDraw(value);
         win = winner(value);
         if (win) {
           setModal(true);
+        }
+        else if(draw)
+        {
+            setModalDraw(true);
         }
       }, [value]);
 
@@ -90,7 +106,7 @@ function Tictactoe({ isX, value, onPlay }) {
                 <Button value={value[7]} onButtonClick = {() => handleClick(7)}/>
                 <Button value={value[8]} onButtonClick = {() => handleClick(8)}/>
             </div>
-            {modal &&  <Modal win={winner(value)} isOpen={modal} onClose={()=>handleClose}/>}
+            {(modalDraw || modal) &&  <Modal win={winner(value)} isOpen={modal} onClose={handleClose} setCurrentMove={setCurrentMove} isDraw={modalDraw}/>}
         </div>
     )
 }
@@ -105,6 +121,13 @@ export default function Board() {
         const nextHistory = [...history.slice(0, currentMove + 1), nextSquares];
         setHistory(nextHistory);
         setCurrentMove(nextHistory.length - 1);
+    }
+
+    function afterDeleting() {
+        const next = [];
+        setHistory(next);
+        setCurrentMove(next.length - 1);
+        xIsNext = true;
     }
 
     function jumpTo(move)
@@ -129,11 +152,11 @@ export default function Board() {
       return (
         <div className="game"> 
             <div>
-                <Tictactoe isX={xIsNext} value={currentSquares} onPlay={handlePlay}/>
+                <Tictactoe isX={xIsNext} value={currentSquares} onPlay={handlePlay} setCurrentMove={setCurrentMove}/>
             </div>
             <div >
                 <ol className="historyMoves">
-                    {moves}
+                 {currentMove!==0 && moves}
                 </ol>
             </div>
         </div>

@@ -1,0 +1,9 @@
+.closebutton {
+    background-color: aqua;
+    border-radius: 10%;
+    box-shadow: inset;
+    font-weight: 800;
+    padding-left: 10%;
+    display: flex;
+    justify-content: center;
+}
