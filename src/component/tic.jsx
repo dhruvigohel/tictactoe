@@ -33,9 +33,9 @@ function isDraw(value) {
     let flag=0;
     for(let i=0; i<9; i++)
     {
-        if(value[i]==0) return 0;
+        if(value[i]==null) return false;
     }
-    return 1;
+    return true;
 }
 
 function Tictactoe({ isX, value, onPlay, setCurrentMove }) {
@@ -51,7 +51,7 @@ function Tictactoe({ isX, value, onPlay, setCurrentMove }) {
     };
  
     function handleClick(i) {
-        if(winner(value) || value[i]) return;
+        if(value[i]) return;
 
         const nextSquares = value.slice();
         if(isX)
@@ -66,12 +66,24 @@ function Tictactoe({ isX, value, onPlay, setCurrentMove }) {
         // setValue(nextSquares);
         onPlay(nextSquares);
 
-    }
-    let win;
-    let draw;
-    useEffect(() => {
+        let win=null;
+        let draw=null;
         draw = isDraw(value);
         win = winner(value);
+        if (winner(value)) {
+            console.log("I was called");
+            setModal(true);
+        }
+        else if(draw)
+        {
+            setModalDraw(true);
+        }
+        if(winner(value) || value[i]) return;
+
+    }
+    useEffect(() => {
+        let draw = isDraw(value);
+        let win = winner(value);
         if (win) {
           setModal(true);
         }
@@ -106,7 +118,7 @@ function Tictactoe({ isX, value, onPlay, setCurrentMove }) {
                 <Button value={value[7]} onButtonClick = {() => handleClick(7)}/>
                 <Button value={value[8]} onButtonClick = {() => handleClick(8)}/>
             </div>
-            {(modalDraw || modal) &&  <Modal win={winner(value)} isOpen={modal} onClose={handleClose} setCurrentMove={setCurrentMove} isDraw={modalDraw}/>}
+             {(modal || modalDraw) && <Modal win={winner(value)} isOpen={modal} onClose={handleClose} setCurrentMove={setCurrentMove} isDraw={modalDraw}/>}
         </div>
     )
 }
@@ -121,6 +133,7 @@ export default function Board() {
         const nextHistory = [...history.slice(0, currentMove + 1), nextSquares];
         setHistory(nextHistory);
         setCurrentMove(nextHistory.length - 1);
+        
     }
 
     function afterDeleting() {
@@ -152,7 +165,7 @@ export default function Board() {
       return (
         <div className="game"> 
             <div>
-                <Tictactoe isX={xIsNext} value={currentSquares} onPlay={handlePlay} setCurrentMove={setCurrentMove}/>
+                <Tictactoe isX={xIsNext} value={history[currentMove]} onPlay={handlePlay} setCurrentMove={setCurrentMove}/>
             </div>
             <div >
                 <ol className="historyMoves">

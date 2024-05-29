@@ -4,7 +4,7 @@ import './modal.css'
 const Modal = ({ isOpen, onClose, win, setCurrentMove, isDraw}) => {
 
 
-    if (!isOpen || !isDraw) return null;
+    //if (!isOpen || !isDraw) return null;
     if(isOpen)
     {
         return (
